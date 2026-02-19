@@ -3,64 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Player</title>
+    <title>Cookies Movies - Watch Movies</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-color: #e50914;
+            --primary-hover: #f40612;
+            --bg-dark: #141414;
+            --bg-darker: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --input-bg: #2a2a2a;
+            --border-color: #404040;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #000;
+            text-align: center;
+            padding: 20px;
         }
-        .container {
-            width: 80%;
-            max-width: 800px;
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--primary-color), #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
             width: 100%;
-            height: 100%;
+            max-width: 500px;
+            margin-bottom: 30px;
+            background: var(--input-bg);
+            border-radius: 50px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .search-container:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.3);
+        }
+
+        #tmdbId {
+            flex-grow: 1;
+            background: transparent;
             border: none;
+            padding: 0 20px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            outline: none;
         }
-        .input-container {
-            margin-bottom: 20px;
+
+        #tmdbId::placeholder {
+            color: var(--text-secondary);
         }
-        .input-container input {
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
+
+        .search-button {
+            background-color: var(--primary-color);
+            color: var(--text-primary);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .search-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .info-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            line-height: 1.5;
+        }
+
+        .info-text a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .info-text a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 2.8rem;
+            }
+            .tagline {
+                font-size: 1rem;
+            }
+            .search-container {
+                flex-direction: column;
+                border-radius: 15px;
+            }
+            #tmdbId {
+                padding: 15px 20px;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .search-button {
+                width: 100%;
+                border-radius: 0 0 15px 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="input-container" id="inputContainer">
-        <input type="text" id="tmdbId" placeholder="Enter TMDB ID" oninput="updateIframeSrc()" onkeypress="handleEnter(event)">
-    </div>
-    <div class="container">
-        <iframe id="movieIframe" allowfullscreen></iframe>
-    </div>
+
+    <main>
+        <h1 class="logo">VidRock</h1>
+        <p class="tagline">Instantly stream any movie by its TMDB ID.</p>
+        
+        <div class="search-container">
+            <input type="number" id="tmdbId" placeholder="Enter TMDB ID (e.g., 550)" aria-label="TMDB ID">
+            <button class="search-button" onclick="redirectToMovie()">Stream Now</button>
+        </div>
+
+        <p class="info-text">
+            Don't know the ID? Find it on <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">The Movie Database (TMDB)</a>. 
+            Just look at the URL of the movie page you want to watch.
+        </p>
+    </main>
 
     <script>
-        function updateIframeSrc() {
+        function redirectToMovie() {
             const tmdbId = document.getElementById('tmdbId').value;
-            const iframe = document.getElementById('movieIframe');
-            iframe.src = `https://vidrock.net/movie/${tmdbId}`;
-        }
-
-        function handleEnter(event) {
-            if (event.key === 'Enter') {
-                document.getElementById('inputContainer').style.display = 'none';
+            if (tmdbId) {
+                window.location.href = `https://vidrock.net/movie/${tmdbId}`;
+            } else {
+                alert('Please enter a TMDB ID to proceed.');
             }
         }
+
+        // Allow submission by pressing Enter in the input field
+        document.getElementById('tmdbId').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                redirectToMovie();
+            }
+        });
     </script>
+
 </body>
 </html>
