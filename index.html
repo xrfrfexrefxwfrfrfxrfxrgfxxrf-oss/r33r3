@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookies Movies - Watch Movies</title>
+    <title>Cookies Movies! - Watch Movies</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
@@ -121,6 +121,40 @@
             text-decoration: underline;
         }
 
+        .adblock-notice {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            padding: 14px 22px;
+            max-width: 500px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .adblock-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .adblock-notice p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .adblock-notice a {
+            color: #ffc107;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .adblock-notice a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 600px) {
             .logo {
                 font-size: 2.8rem;
@@ -147,17 +181,22 @@
 
     <main>
         <h1 class="logo">Cookies Movies!</h1>
-        <p class="tagline">Instantly stream any movie by its TMDB ID, we recommend using AdGuard since the player has many popups and ads.</p>
-        
+        <p class="tagline">Instantly stream any movie by its TMDB ID.</p>
+
         <div class="search-container">
             <input type="number" id="tmdbId" placeholder="Enter TMDB ID (e.g., 550)" aria-label="TMDB ID">
             <button class="search-button" onclick="redirectToMovie()">Stream Now</button>
         </div>
 
         <p class="info-text">
-            Don't know the ID? Find it on <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">The Movie Database (TMDB)</a>. 
+            Don't know the ID? Find it on <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">The Movie Database (TMDB)</a>.
             Just look at the URL of the movie page you want to watch.
         </p>
+
+        <div class="adblock-notice">
+            <span class="adblock-icon">🛡️</span>
+            <p>We recommend using <a href="https://adguard.com" target="_blank" rel="noopener noreferrer">AdGuard</a> or any ad blocker before streaming. The player may have pop-ups and ads.</p>
+        </div>
     </main>
 
     <script>
